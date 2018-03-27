@@ -10,7 +10,7 @@
 var number = 60;
 var intervalId;
 var nextQuestion;
-setTimeout(nextQuestion, 1000 * 15);
+
 
 //correct += correct answer guessed by user
 var correct = []
@@ -74,17 +74,24 @@ function stop() {
 clearInterval(intervalId);
 }
 
-
-
 //A function to show questions one at a time
+function nextQuestion() {
+
+    for(var i=0; i<questions.length; i++) {
+        $("#question").html(questions[i].question);
+        $("#options").append("<input type='radio'>" + options[i] + "</input>");
+    };
+
+}
+
+//A click event to change to a new question every 15 seconds
 $("#start").on("click", function(){
 
-    //for (var i=0; i < 5; i++) {
-        $("#question").html(questions[i].question);
-        $("#options").html("<input type='radio'" + questions[i].options + "</input>");
+    for(var i=0; i<questions.length; i++) {
+        setInterval(nextQuestion(questions[i++], 1500));
         console.log("next question");
-    //};
-
+    };
+    
 })
     
     
