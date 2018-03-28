@@ -1,5 +1,5 @@
 
-var number = 26;
+var number = 31;
 var intervalId;
 var questionInterval;
 
@@ -97,11 +97,7 @@ $("#start").on("click", function(){
     questionInterval = setInterval(
         function() {
 
-            //Once we get to the last question, the timer stops and clears
-            if (i >= questions.length) {
-                clearInterval(questionInterval);
-            }
-
+ 
             //The game will mark the answer the user selected
             var selected = $("input:checked").val();
 
@@ -120,7 +116,14 @@ $("#start").on("click", function(){
 
             //The game will continue until the first if statement is proven true
             i++;
-            nextQuestion(questions[i]);
+            
+            //Once we get to the last question, the timer stops and clears
+            if (i >= questions.length) {
+                clearInterval(questionInterval);
+            } else {
+                nextQuestion(questions[i]);
+            }
+
         },
 
         //This is how long the user will have to answer each question
