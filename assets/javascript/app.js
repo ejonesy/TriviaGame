@@ -1,23 +1,13 @@
-//Within a timer function?
-//series of questions
-    //four possible answers each
-    //each question is a form requirng input
-//Display question
-//User responds to question
-//Computer stores user choice
-//when timer runs out computer tells user how many questions they got right out of questions they were asked.
 
-var number = 60;
+var number = 26;
 var intervalId;
+var questionInterval;
+
+var correct = 0;
+var incorrect = 0;
+
 var nextQuestion;
-
-
-//correct += correct answer guessed by user
-var correct = []
-
-//incorrect += incorrect answer guessed by user
-var incorrect = []
-
+var answer;
 var questions = [
 
     //Question 1
@@ -48,38 +38,48 @@ var questions = [
         options: ["Paramedic", "Mailman", "Firefighter", "911 Operator"]
     }
    
-]
+];
 
-//var text = questions[questionnumber2].text; //to access question 2
-//var answer = questions[questionnumber2].answer; to access the answer
 
-var answer
 
 $("#start").on("click", run); //The run function does not need to be called later because it is called when the user clicks the start button.
 
 function run() {
+
+    //The count starts over
     clearInterval(intervalId);
     intervalId = setInterval(decrement, 1000);
   }
 
 function decrement() {
+    
+    //The countdown will continue until it reaches 0 and then it stops
     number--;
     $("#time-left").html("<h2>" + number + "</h2>");
     if (number === 0) {
       stop();
-      alert("Time Up!");
+      alert("Time's Up!");
     }
   }
+
 function stop() {
-clearInterval(intervalId);
+
+    //The countdown stops and clears the count
+    clearInterval(intervalId);
 }
 
 //A function to show questions one at a time
-function nextQuestion() {
+function nextQuestion(currentQuestion) {
 
-    for(var i=0; i<questions.length; i++) {
-        $("#question").html(questions[i].question);
-        $("#options").append("<input type='radio'>" + options[i] + "</input>");
+    //Removes the previous question
+    $("#options").empty();
+
+    //Shows the next question
+    $("#question").text(currentQuestion.question);
+
+    //Adds the corresponding multiple choice answers with radio inputs to each question
+    for(var i=0; i < currentQuestion.options.length; i++) {
+        $("#options").append("<input type='radio' name='choice' value=''>" + currentQuestion.options[i] + "</input>"); //Adding a name makes it so only one answer can be selected per question
     };
 
 }
@@ -87,10 +87,46 @@ function nextQuestion() {
 //A click event to change to a new question every 15 seconds
 $("#start").on("click", function(){
 
-    for(var i=0; i<questions.length; i++) {
-        setInterval(nextQuestion(questions[i++], 1500));
-        console.log("next question");
-    };
+    //like in a for loop, we need the function to know to start at index 0
+    var i = 0;
+   
+    //Here we are running the previous function on the questions array, starting at index 0
+    nextQuestion(questions[i]);
+
+    //We define the global variable questionInterval as a setInterval function
+    questionInterval = setInterval(
+        function() {
+
+            //Once we get to the last question, the timer stops and clears
+            if (i >= questions.length) {
+                clearInterval(questionInterval);
+            }
+
+            //The game will mark the answer the user selected
+            var selected = $("input:checked").val();
+
+            //And compare it to the correct answer
+            if (selected === questions[i].answer) {
+                //correct++;
+                $("#correct").text("Correct: ", correct++);
+                console.log(correct);
+            }
+
+            if (selected !== questions[i].answer) {
+                //incorrect;
+                $("#incorrect").text("Incorrect: ", incorrect++);
+                console.log(incorrect);
+            }
+
+            //The game will continue until the first if statement is proven true
+            i++;
+            nextQuestion(questions[i]);
+        },
+
+        //This is how long the user will have to answer each question
+        5000
+    );
+    
     
 })
     
