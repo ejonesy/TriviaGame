@@ -7,7 +7,6 @@ var correct = 0;
 var incorrect = 0;
 
 var nextQuestion;
-var answer;
 var questions = [
 
     //Question 1
@@ -90,36 +89,45 @@ $("#start").on("click", function(){
     //like in a for loop, we need the function to know to start at index 0
     var i = 0;
    
-    //Here we are running the previous function on the questions array, starting at index 0
+    //Here we are running the previous function on the questions array
     nextQuestion(questions[i]);
 
     //We define the global variable questionInterval as a setInterval function
     questionInterval = setInterval(
         function() {
 
- 
             //The game will mark the answer the user selected
             var selected = $("input:checked").val();
 
             //And compare it to the correct answer
+            console.log(selected);
+            console.log("Questions I answer: ");
             if (selected === questions[i].answer) {
-                //correct++;
-                $("#correct").text("Correct: ", correct++);
-                console.log(correct);
+                correct++;
+                console.log("Correct: " + correct);
             }
 
             if (selected !== questions[i].answer) {
-                //incorrect;
-                $("#incorrect").text("Incorrect: ", incorrect++);
-                console.log(incorrect);
+                incorrect++;
+                console.log("Incorrect: " + incorrect);
             }
 
-            //The game will continue until the first if statement is proven true
+            //Proceeds to the next question in the array after checking both if statements
             i++;
             
             //Once we get to the last question, the timer stops and clears
             if (i >= questions.length) {
                 clearInterval(questionInterval);
+
+                if (correct >= 3) {
+                    $("#correct").text("YOU WON!" + "Correct: " + correct);
+                    $("#incorrect").text("Incorrect: " + "Incorrect: " + incorrect);
+                } else {
+                    $("#incorrect").text("YOU LOST!" + "Incorrect: " + incorrect);
+                    $("#correct").text("Correct: " + "Correct: " + correct);
+                }
+               
+
             } else {
                 nextQuestion(questions[i]);
             }
@@ -127,7 +135,7 @@ $("#start").on("click", function(){
         },
 
         //This is how long the user will have to answer each question
-        5000
+        6000
     );
     
     
