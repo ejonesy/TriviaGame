@@ -78,7 +78,7 @@ function nextQuestion(currentQuestion) {
 
     //Adds the corresponding multiple choice answers with radio inputs to each question
     for(var i=0; i < currentQuestion.options.length; i++) {
-        $("#options").append("<input type='radio' name='choice' value=''>" + currentQuestion.options[i] + "</input>"); //Adding a name makes it so only one answer can be selected per question
+        $("#options").append("<input type='radio' name='choice' value="+ currentQuestion.options[i] + ">" + currentQuestion.options[i] + "</input>"); //Adding a name makes it so only one answer can be selected per question
     };
 
 }
@@ -98,18 +98,17 @@ $("#start").on("click", function(){
 
             //The game will mark the answer the user selected
             var selected = $("input:checked").val();
-
             //And compare it to the correct answer
-            console.log(selected);
-            console.log("Questions I answer: ");
             if (selected === questions[i].answer) {
                 correct++;
                 console.log("Correct: " + correct);
+                console.log(selected);
             }
 
             if (selected !== questions[i].answer) {
                 incorrect++;
                 console.log("Incorrect: " + incorrect);
+                console.log(selected);
             }
 
             //Proceeds to the next question in the array after checking both if statements
